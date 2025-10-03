@@ -28,6 +28,7 @@ var pictureTabName = 'Picture';
 var viewTabName = 'View';
 var helpTabName = 'Help';
 var formulaTabName = 'Formula';
+var skopeoTabName = 'Skopeo';
 
 window.L.Control.NotebookbarWriter = window.L.Control.Notebookbar.extend({
 
@@ -116,6 +117,12 @@ window.L.Control.NotebookbarWriter = window.L.Control.Notebookbar.extend({
 				'name': formulaTabName,
 				'context': 'Math',
 				'accessibility': { focusBack: true, combination: 'V', de: 'Y' }
+			},
+			{
+				'text': _('Skopeo'),
+				'id': skopeoTabName + '-tab-label',
+				'name': skopeoTabName,
+				'accessibility': { focusBack: true, combination: 'S', de: null }
 			}
 		];
 	},
@@ -135,7 +142,8 @@ window.L.Control.NotebookbarWriter = window.L.Control.Notebookbar.extend({
 			this.getPictureTab(),
 			this.getViewTab(),
 			this.getHelpTab(),
-			this.getFormulaTab()
+			this.getFormulaTab(),
+			this.getSkopeoTab()
 		]
 	},
 
@@ -417,6 +425,149 @@ window.L.Control.NotebookbarWriter = window.L.Control.Notebookbar.extend({
 
 		return this.getTabPage(fileTabName, content);
 	},
+
+	getSkopeoTab: function() {
+		var hasLatestUpdates = window.enableWelcomeMessage;
+		var hasFeedback = this.map.feedback;
+		var hasAccessibilitySupport = window.enableAccessibility;
+		var hasAccessibilityCheck = this.map.getDocType() === 'text';
+		var hasAbout = window.L.DomUtil.get('about-dialog') !== null;
+		var hasServerAudit = !this.hiddenItems.includes('server-audit');
+
+		var content = [
+				{
+					'type': 'toolbox',
+					'children': [
+						{
+							'id': 'forum',
+							'type': 'bigtoolitem',
+							'text': _('Forum'),
+							'command': '.uno:ForumHelp',
+							'accessibility': { focusBack: true, combination: 'C', de: null }
+						}
+					]
+				},
+				{
+					'type': 'toolbox',
+					'children': [
+						{
+							'id': 'online-help',
+							'type': 'bigtoolitem',
+							'text': _('Online Help'),
+							'command': '.uno:OnlineHelp',
+							'accessibility': { focusBack: false, combination: 'H', de: null }
+						}
+					]
+				},
+				{ type: 'separator', id: 'help-onlinehelp-break', orientation: 'vertical' },
+				{
+					'type': 'toolbox',
+					'children': [
+						{
+							'id': 'keyboard-shortcuts',
+							'type': 'bigtoolitem',
+							'text': _('Keyboard shortcuts'),
+							'command': '.uno:KeyboardShortcuts',
+							'accessibility': { focusBack: false, combination: 'S', de: null }
+						}
+					]
+				},
+				{ type: 'separator', id: 'help-keyboardshortcuts-break', orientation: 'vertical' },
+				hasAccessibilitySupport ?
+					{
+						'id':'togglea11ystate',
+						'type': 'bigcustomtoolitem',
+						'text': _('Screen Reading'),
+						'accessibility': { focusBack: true,	combination: 'SR', de: null }
+					} : {},
+				hasAccessibilityCheck ?
+					{
+						'id': 'accessibility-check',
+						'class': 'unoAccessibilityCheck',
+						'type': 'bigtoolitem',
+						'text': _UNO('.uno:AccessibilityCheck', 'text'),
+						'command': '.uno:SidebarDeck.A11yCheckDeck',
+						'accessibility': { focusBack: false, combination: 'A', de: null }
+					} : {},
+				hasAccessibilitySupport || hasAccessibilityCheck ?
+					{
+						'id': 'help-accessibility-break',
+						'type': 'separator',
+						'orientation': 'vertical'
+					} : {},
+				hasServerAudit ?
+				{
+					'id': 'server-audit',
+					'type': 'bigcustomtoolitem',
+					'text': _('Server audit'),
+					'command': 'serveraudit',
+					'accessibility': { focusBack: false, combination: 'SA', de: null }
+				} : {},
+				hasServerAudit ?
+				{
+				'id': 'help-serveraudit-break',
+				'type': 'separator',
+				'orientation': 'vertical'
+				} : {},
+				{
+					'type': 'toolbox',
+					'children': [
+						{
+							'id': 'report-an-issue',
+							'type': 'bigtoolitem',
+							'text': _('Report an issue'),
+							'command': '.uno:ReportIssue',
+							'accessibility': { focusBack: true, combination: 'K', de: null }
+						},
+					]
+				},
+				{ 'type': 'separator', 'id': 'help-reportissue-break', 'orientation': 'vertical' },
+				hasLatestUpdates ?
+					{
+						'type': 'toolbox',
+						'children': [
+							{
+								'id': 'latestupdates',
+								'type': 'bigtoolitem',
+								'text': _('Latest Updates'),
+								'command': '.uno:LatestUpdates',
+								'accessibility': { focusBack: true,	combination: 'LU', de: null }
+
+							}
+						]
+					} : {},
+				hasFeedback ?
+					{
+						'type': 'toolbox',
+						'children': [
+							{
+								'id': 'feedback',
+								'type': 'bigtoolitem',
+								'text': _('Send Feedback'),
+								'command': '.uno:Feedback',
+								'accessibility': { focusBack: true,	combination: 'SF', de: null }
+							}
+						]
+					} : {},
+				hasAbout ?
+					{
+						'type': 'toolbox',
+						'children': [
+							{
+								'id': 'about',
+								'type': 'bigtoolitem',
+								'text': _('About'),
+								'command': '.uno:About',
+								'accessibility': { focusBack: false, combination: 'W', de: null }
+							}
+						]
+					} : {}
+		];
+
+		return this.getTabPage(helpTabName, content);
+	},
+
+
 
 	getHelpTab: function() {
 		var hasLatestUpdates = window.enableWelcomeMessage;
