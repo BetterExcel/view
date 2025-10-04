@@ -44,6 +44,7 @@ RUN wget https://github.com/CollaboraOnline/online/releases/download/for-code-as
     rm core-co-25.04-assets.tar.gz
 
 ENV LOCOREPATH=/app
+ENV COOL_SERVE_FROM_FS=1
 COPY . .
 
 RUN groupadd -r -g 1001 cool && \
@@ -62,4 +63,4 @@ RUN ./configure \
     --enable-cypress
 RUN make -j$(nproc)
 
-CMD ["/app/coolwsd", "--no-initial-user-creation", "--o:sys_template_path=/app/instdir", "--o:security.capabilities=false"]
+CMD ["make", "run"]
