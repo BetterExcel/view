@@ -1,33 +1,30 @@
-FROM archlinux
+FROM ubuntu:24.04
 
 WORKDIR /app
 ENV LOCOREPATH=/app
 
-RUN yes | pacman -Syu --noconfirm \
-    git \
-    libxcrypt-compat \
-    wget \
-    tar \
-    m4 \
-    pkgconf \
-    autoconf \
-    make \
-    clang \
-    gcc \
-    automake \
-    libcap \
-    libcap-ng \
-    libpng \
-    poco \
-    cppunit \
-    nodejs \
+RUN apt update && apt upgrade -y
+RUN apt install -y \
+    dialog \
+    libpoco-dev \
+    python3-polib \
+    libcap-dev \
     npm \
-    chromium \
-    python-lxml \
-    cpio \
-    python-pip \
-    python-polib \
-    fontconfig
+    libpam-dev \
+    libzstd-dev \
+    wget \
+    git \
+    build-essential \
+    libtool \
+    libcap2-bin \
+    python3-lxml \
+    libpng-dev \
+    libgif-dev \
+    libcppunit-dev \
+    pkg-config \
+    fontconfig \
+    snapd \
+    chromium-browser
 
 RUN wget https://github.com/CollaboraOnline/online/releases/download/for-code-assets/core-co-25.04-assets.tar.gz && \
     tar xvf core-co-25.04-assets.tar.gz && \
@@ -45,7 +42,7 @@ ENV HOME=/home/cool
 ENV FONTCONFIG_PATH=/etc/fonts
 
 RUN chown -R cool:cool /app
-    
+
 USER cool
 
 WORKDIR /app/src/view
