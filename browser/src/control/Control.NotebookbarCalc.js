@@ -99,6 +99,12 @@ window.L.Control.NotebookbarCalc = window.L.Control.NotebookbarWriter.extend({
 				'text': _('Help'),
 				'name': 'Help',
 				'accessibility': { focusBack: true,	combination: 'Y', de: null }
+			},
+			{
+				'id': 'Skopeo-tab-label',
+				'text': _('Skopeo'),
+				'name': 'Skopeo',
+				'accessibility': { focusBack: true,	combination: 'Y', de: null }
 			}
 		];
 	},
@@ -117,7 +123,8 @@ window.L.Control.NotebookbarCalc = window.L.Control.NotebookbarWriter.extend({
 			this.getPictureTab(),
 			this.getViewTab(),
 			this.getSparklineTab(),
-			this.getHelpTab()
+			this.getHelpTab(),
+			this.getSkopeoTab()
 		]
 	},
 
